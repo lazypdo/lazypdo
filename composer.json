@@ -1,6 +1,6 @@
 {
     "name": "lazypdo/lazypdo",
-    "description": "LazyPDO is a set of wrappers over PHP's standard PDO and PDOStatement class. It enables lazy loading, serialization and decoration.",
+    "description": "LazyPDO is a set of wrappers over PHP's standard PDO and PDOStatement classes. It enables lazy loading, serialization and decoration.",
     "keywords": ["test", "unit test", "pdo", "mock", "lazyload", "lazy load", "serializable", "serialize"],
     "homepage": "https://github.com/lazypdo/lazypdo",
     "license": "MIT",
