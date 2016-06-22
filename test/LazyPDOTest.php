@@ -1,20 +1,22 @@
 <?php
-namespace F3\LazyPDO;
+
+/**
+ * This file is part of LazyPDO.
+ *
+ * (c) Alexey Karapetov <karapetov@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace LazyPDO;
 
 use PDO;
+use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use RuntimeException;
 
-/**
- * LazyPDOTest
- *
- * @package   LazyPDO
- * @version   $id$
- * @copyright Alexey Karapetov
- * @author    Alexey Karapetov <karapetov@gmail.com>
- * @license   http://opensource.org/licenses/mit-license.php The MIT License (MIT)
- */
-class LazyPDOTest extends \PHPUnit_Framework_TestCase
+class LazyPDOTest extends PHPUnit_Framework_TestCase
 {
     private $pdo;
 
@@ -39,7 +41,7 @@ class LazyPDOTest extends \PHPUnit_Framework_TestCase
                 'lastInsertId',
             ))
             ->getMock();
-        $this->lazy = $this->getMockBuilder('F3\\LazyPDO\\LazyPDO')
+        $this->lazy = $this->getMockBuilder('LazyPDO\\LazyPDO')
             ->setMethods(array('getPDO'))
             ->setConstructorArgs(array('dsn', 'user', 'pass', array('key' => 'val')))
             ->getMock();
@@ -107,7 +109,7 @@ class LazyPDOTest extends \PHPUnit_Framework_TestCase
         if (false === extension_loaded('pdo_sqlite')) {
             $this->markTestSkipped('pdo_sqlite not loaded');
         }
-        $class = new ReflectionClass('F3\\LazyPDO\\LazyPDO');
+        $class = new ReflectionClass('LazyPDO\\LazyPDO');
         $method = $class->getMethod('getPDO');
         $method->setAccessible(true);
 
@@ -125,7 +127,7 @@ class LazyPDOTest extends \PHPUnit_Framework_TestCase
      */
     public function testSerializeShouldThrowExceptionInTransaction()
     {
-        $lazy = $this->getMockBuilder('F3\\LazyPDO\\LazyPDO')
+        $lazy = $this->getMockBuilder('LazyPDO\\LazyPDO')
             ->setConstructorArgs(array('dsn', 'user', 'pass', array()))
             ->setMethods(array('inTransaction'))
             ->getMock();
@@ -140,7 +142,7 @@ class LazyPDOTest extends \PHPUnit_Framework_TestCase
         $dsn = 'sqlite::memory:';
         $lazy = new LazyPDO($dsn, 'user', 'pass');
         $serialized = serialize($lazy);
-        $this->assertEquals('C:18:"F3\\LazyPDO\\LazyPDO":73:{a:4:{i:0;s:' . mb_strlen($dsn) . ':"' . $dsn . '";i:1;s:4:"user";i:2;s:4:"pass";i:3;a:0:{}}}', $serialized);
+        $this->assertEquals('C:15:"LazyPDO\\LazyPDO":73:{a:4:{i:0;s:' . mb_strlen($dsn) . ':"' . $dsn . '";i:1;s:4:"user";i:2;s:4:"pass";i:3;a:0:{}}}', $serialized);
         $this->assertEquals($lazy, unserialize($serialized));
     }
 

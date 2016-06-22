@@ -1,18 +1,20 @@
 <?php
-namespace F3\LazyPDO;
-
-use PDO;
 
 /**
- * PDODecoratorTest
+ * This file is part of LazyPDO.
  *
- * @package LazyPDO
- * @version $id$
- * @copyright Alexey Karapetov
- * @author Alexey Karapetov <karapetov@gmail.com>
- * @license http://opensource.org/licenses/mit-license.php The MIT License (MIT)
+ * (c) Alexey Karapetov <karapetov@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-class PDODecoratorTest extends \PHPUnit_Framework_TestCase
+
+namespace LazyPDO;
+
+use PDO;
+use PHPUnit_Framework_TestCase;
+
+class PDODecoratorTest extends PHPUnit_Framework_TestCase
 {
     protected $pdoDecorator;
 
@@ -38,7 +40,7 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
             ))
             ->getMock();
 
-        $this->pdoDecorator = $this->getMockForAbstractClass('F3\\LazyPDO\\PDODecorator');
+        $this->pdoDecorator = $this->getMockForAbstractClass('LazyPDO\\PDODecorator');
 
         $this->pdoDecorator->expects($this->any())
             ->method('getPDO')
@@ -172,9 +174,10 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
         $testType = 'testType';
         $this->pdoStub->expects($this->once())
             ->method('quote')
-            ->with($testParameter, $testType);
+            ->with($testParameter, $testType)
+            ->willReturn('quotedParameter');
 
-        $this->pdoDecorator->quote($testParameter, $testType);
+        $this->assertEquals('quotedParameter', $this->pdoDecorator->quote($testParameter, $testType));
     }
 
     public function testQuoteWithUnspecifiedType()
@@ -182,9 +185,9 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
         $testParameter = 'testParameter';
         $this->pdoStub->expects($this->once())
             ->method('quote')
-            ->with($testParameter, PDO::PARAM_STR);
+            ->willReturn('quotedParameter');
 
-        $this->pdoDecorator->quote($testParameter);
+        $this->assertEquals('quotedParameter', $this->pdoDecorator->quote($testParameter));
     }
 
     public function testLastInsertIdWithUnspecifiedName()

@@ -1,20 +1,27 @@
 <?php
-namespace F3\LazyPDO;
+
+/**
+ * This file is part of LazyPDO.
+ *
+ * (c) Alexey Karapetov <karapetov@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace LazyPDO;
 
 use PDO;
 use PDOStatement;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
 
-class PDOStatementDecoratorTest extends \PHPUnit_Framework_TestCase
+class PDOStatementDecoratorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var PDOStatement
      */
     protected $pdoStatementDecorator;
 
-    /**
-     * @var PHPUnit_Framework_MockObject_MockObject
-     */
     protected $pdoStatementStub;
 
     protected function setUp()
@@ -43,7 +50,7 @@ class PDOStatementDecoratorTest extends \PHPUnit_Framework_TestCase
             ))->disableArgumentCloning()
             ->getMock();
 
-        $this->pdoStatementDecorator = $this->getMockForAbstractClass('F3\\LazyPDO\\PDOStatementDecorator');
+        $this->pdoStatementDecorator = $this->getMockForAbstractClass('LazyPDO\\PDOStatementDecorator');
 
         $this->pdoStatementDecorator->expects($this->any())
             ->method('getPDOStatement')
@@ -97,7 +104,7 @@ class PDOStatementDecoratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider methods
-     * @param       $methodName
+     * @param string $methodName
      * @param array $params
      */
     public function testMethod($methodName, array $params)

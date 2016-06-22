@@ -1,17 +1,21 @@
 <?php
-namespace F3\LazyPDO;
+
+/**
+ * This file is part of LazyPDO.
+ *
+ * (c) Alexey Karapetov <karapetov@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace LazyPDO;
 
 use PDO;
 use PDOStatement;
 
 /**
- * PDO decorator, redirect calls to PDO methods
- *
- * @package LazyPDO
- * @version $id$
- * @copyright Alexey Karapetov
- * @author Alexey Karapetov <karapetov@gmail.com>
- * @license http://opensource.org/licenses/mit-license.php The MIT License (MIT)
+ * PDO decorator, redirect calls to PDO
  */
 abstract class PDODecorator extends PDO
 {
@@ -143,7 +147,7 @@ abstract class PDODecorator extends PDO
      */
     public function quote($string, $type = PDO::PARAM_STR)
     {
-        return $this->getPDO()->quote($string, $type);
+        return call_user_func_array(array($this->getPDO(), __FUNCTION__), func_get_args());
     }
 
     /**
@@ -166,11 +170,6 @@ abstract class PDODecorator extends PDO
      */
     public function query($statement)
     {
-        if (1 == func_num_args()) {
-            return $this->getPDO()->query($statement);
-        }
-        // this way is much slower but supports overloading
-        // http://php.net/manual/en/pdo.query.php
         return call_user_func_array(array($this->getPDO(), __FUNCTION__), func_get_args());
     }
 }

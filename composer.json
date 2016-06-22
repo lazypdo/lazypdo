@@ -1,8 +1,8 @@
 {
-    "name": "f3ath/lazypdo",
-    "description": "LazyPDO is a wrapper over PHP's standard PDO class. It postpones the instantiation of the original PDO class until one is really needed. Also it can be (un)serialized.",
-    "keywords": ["test", "unit test", "pdo", "mock", "phpunit", "lazyload", "lazy load", "serializable", "serialize"],
-    "homepage": "https://github.com/f3ath/LazyPDO",
+    "name": "lazypdo/lazypdo",
+    "description": "LazyPDO is a set of wrappers over PHP's standard PDO and PDOStatement class. It enables lazy loading, serialization and decoration.",
+    "keywords": ["test", "unit test", "pdo", "mock", "lazyload", "lazy load", "serializable", "serialize"],
+    "homepage": "https://github.com/lazypdo/lazypdo",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "F3\\LazyPDO\\": "src/"
+            "LazyPDO\\": "src/"
         }
     }
 }

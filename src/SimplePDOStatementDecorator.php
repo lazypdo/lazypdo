@@ -1,5 +1,15 @@
 <?php
-namespace F3\LazyPDO;
+
+/**
+ * This file is part of LazyPDO.
+ *
+ * (c) Alexey Karapetov <karapetov@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace LazyPDO;
 
 use PDOStatement;
 
@@ -22,7 +32,7 @@ class SimplePDOStatementDecorator extends PDOStatementDecorator
     /**
      * @return PDOStatement
      */
-    public function getPDOStatement()
+    protected function getPDOStatement()
     {
         return $this->pdoStatement;
     }
