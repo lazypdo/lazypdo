@@ -159,4 +159,38 @@ class LazyPDOTest extends PHPUnit_Framework_TestCase
         $lazy = unserialize(serialize($lazy));
         $this->assertEquals(PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(PDO::ATTR_ERRMODE));
     }
+
+    public function testTransactions()
+    {
+        $dsn = 'sqlite::memory:';
+        $lazy = new LazyPDO($dsn, 'user', 'pass', array());
+        $lazy->exec('CREATE TABLE my_test (id INT PRIMARY KEY)');
+
+        // Successful case
+        $lazy->beginTransaction();
+        $insert = $lazy->prepare('INSERT INTO my_test VALUES (:id)');
+        $insert->execute(array(
+            ':id' => 1,
+        ));
+        $lazy->commit();
+
+        // Unsuccessful case
+        $lazy->beginTransaction();
+        $insert = $lazy->prepare('INSERT INTO my_test VALUES (:id)');
+        $insert->execute(array(
+            ':id' => 2,
+        ));
+        $lazy->rollBack();
+
+        $select = $lazy->prepare('SELECT * FROM my_test');
+        $select->execute();
+        $this->assertEquals(
+            array(
+                array(
+                    'id' => 1,
+                )
+            ),
+            $select->fetchAll(PDO::FETCH_ASSOC)
+        );
+    }
 }
