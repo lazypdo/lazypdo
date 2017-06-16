@@ -11,13 +11,10 @@
 
 namespace LazyPDO;
 
-use PDO;
-use PDOStatement;
-
-abstract class PDOStatementDecorator extends PDOStatement
+abstract class PDOStatementDecorator extends \PDOStatement
 {
     /**
-     * @return PDOStatement
+     * @return \PDOStatement
      */
     abstract protected function getPDOStatement();
 
@@ -41,7 +38,7 @@ abstract class PDOStatementDecorator extends PDOStatement
     /**
      * @inheritdoc
      */
-    public function fetch($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
+    public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
     {
         return call_user_func_array(array($this->getPDOStatement(), __FUNCTION__), func_get_args());
     }
@@ -69,7 +66,7 @@ abstract class PDOStatementDecorator extends PDOStatement
     /**
      * @inheritdoc
      */
-    public function bindValue($parameter, $value, $data_type = PDO::PARAM_STR)
+    public function bindValue($parameter, $value, $data_type = \PDO::PARAM_STR)
     {
         return call_user_func_array(array($this->getPDOStatement(), __FUNCTION__), func_get_args());
     }

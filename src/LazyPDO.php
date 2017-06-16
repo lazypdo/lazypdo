@@ -4,21 +4,17 @@
  * This file is part of LazyPDO.
  *
  * (c) Alexey Karapetov <karapetov@gmail.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace LazyPDO;
 
-use PDO;
-use RuntimeException;
-use Serializable;
-
 /**
  * LazyPDO does not instantiate real PDO until it is really needed
  */
-class LazyPDO extends PDODecorator implements Serializable
+class LazyPDO extends PDODecorator implements \Serializable
 {
     private $dsn;
     private $user;
@@ -46,12 +42,12 @@ class LazyPDO extends PDODecorator implements Serializable
     /**
      * Get PDO object. Cache the result
      *
-     * @return PDO
+     * @return \PDO
      */
     protected function getPDO()
     {
         if (null === $this->pdo) {
-            $this->pdo = new PDO($this->dsn, $this->user, $this->password, $this->options);
+            $this->pdo = new \PDO($this->dsn, $this->user, $this->password, $this->options);
         }
         return $this->pdo;
     }
@@ -75,7 +71,7 @@ class LazyPDO extends PDODecorator implements Serializable
     public function serialize()
     {
         if ($this->inTransaction()) {
-            throw new RuntimeException('Can not serialize in transaction');
+            throw new \RuntimeException('Can not serialize in transaction');
         }
         return serialize(array(
             $this->dsn,

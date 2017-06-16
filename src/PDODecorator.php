@@ -30,7 +30,9 @@ abstract class PDODecorator extends PDO
      * Empty default constructor. Redefined the PDO's native one
      * to prevent instantiating the PDO.
      */
-    public function __construct() { }
+    public function __construct()
+    {
+    }
 
     /**
      * Sets attribute
