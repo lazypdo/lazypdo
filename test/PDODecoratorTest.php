@@ -9,12 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace LazyPDO;
+namespace LazyPDO\Test;
 
-use PDO;
-use PHPUnit_Framework_TestCase;
-
-class PDODecoratorTest extends PHPUnit_Framework_TestCase
+class PDODecoratorTest extends \PHPUnit_Framework_TestCase
 {
     protected $pdoDecorator;
 
@@ -65,7 +62,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->with('testAttribute', 'testValue')
             ->will($this->returnValue($returnFlag));
 
-        $this->assertThat($this->pdoDecorator->setAttribute('testAttribute', 'testValue'), $this->identicalTo($returnFlag));
+        $this->assertThat(
+            $this->pdoDecorator->setAttribute('testAttribute', 'testValue'),
+            $this->identicalTo($returnFlag)
+        );
     }
 
     public function testGetAttribute()
@@ -75,7 +75,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->with('testAttribute')
             ->will($this->returnValue('testValue'));
 
-        $this->assertThat($this->pdoDecorator->getAttribute('testAttribute'), $this->identicalTo('testValue'));
+        $this->assertThat(
+            $this->pdoDecorator->getAttribute('testAttribute'),
+            $this->identicalTo('testValue')
+        );
     }
 
     /**
@@ -88,7 +91,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->with('statement', array('option' => 'value'))
             ->will($this->returnValue($returnFlag));
 
-        $this->assertThat($this->pdoDecorator->prepare('statement', array('option' => 'value')), $this->identicalTo($returnFlag));
+        $this->assertThat(
+            $this->pdoDecorator->prepare('statement', array('option' => 'value')),
+            $this->identicalTo($returnFlag)
+        );
     }
 
     /**
@@ -100,7 +106,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('beginTransaction')
             ->will($this->returnValue($result));
 
-        $this->assertThat($this->pdoDecorator->beginTransaction(), $this->identicalTo($result));
+        $this->assertThat(
+            $this->pdoDecorator->beginTransaction(),
+            $this->identicalTo($result)
+        );
     }
 
     /**
@@ -112,7 +121,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('inTransaction')
             ->will($this->returnValue($result));
 
-        $this->assertThat($this->pdoDecorator->inTransaction(), $this->identicalTo($result));
+        $this->assertThat(
+            $this->pdoDecorator->inTransaction(),
+            $this->identicalTo($result)
+        );
     }
 
     /**
@@ -124,7 +136,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('rollBack')
             ->will($this->returnValue($result));
 
-        $this->assertThat($this->pdoDecorator->rollBack(), $this->identicalTo($result));
+        $this->assertThat(
+            $this->pdoDecorator->rollBack(),
+            $this->identicalTo($result)
+        );
     }
 
     /**
@@ -136,7 +151,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('commit')
             ->will($this->returnValue($result));
 
-        $this->assertThat($this->pdoDecorator->commit(), $this->identicalTo($result));
+        $this->assertThat(
+            $this->pdoDecorator->commit(),
+            $this->identicalTo($result)
+        );
     }
 
     public function testErrorCode()
@@ -145,7 +163,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('errorCode')
             ->will($this->returnValue('testErrorCode'));
 
-        $this->assertThat($this->pdoDecorator->errorCode(), $this->identicalTo('testErrorCode'));
+        $this->assertThat(
+            $this->pdoDecorator->errorCode(),
+            $this->identicalTo('testErrorCode')
+        );
     }
 
     public function testErrorInfo()
@@ -154,7 +175,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('errorInfo')
             ->will($this->returnValue(array('testErrorInfo')));
 
-        $this->assertThat($this->pdoDecorator->errorInfo(), $this->identicalTo(array('testErrorInfo')));
+        $this->assertThat(
+            $this->pdoDecorator->errorInfo(),
+            $this->identicalTo(array('testErrorInfo'))
+        );
     }
 
     public function testExec()
@@ -165,7 +189,10 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->with('testStatement')
             ->will($this->returnValue($testValue));
 
-        $this->assertThat($this->pdoDecorator->exec('testStatement'), $this->identicalTo($testValue));
+        $this->assertThat(
+            $this->pdoDecorator->exec('testStatement'),
+            $this->identicalTo($testValue)
+        );
     }
 
     public function testQuote()
@@ -195,7 +222,7 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
         $testResult = 'testResult';
         $this->pdoStub->expects($this->once())
             ->method('lastInsertId')
-            ->with(NULL)
+            ->with(null)
             ->will($this->returnValue($testResult));
 
         $this->assertThat($this->pdoDecorator->lastInsertId(), $this->identicalTo($testResult));
@@ -220,6 +247,9 @@ class PDODecoratorTest extends PHPUnit_Framework_TestCase
             ->method('query')
             ->with($query, 'test', 'overloaded', 'call')
             ->will($this->returnValue($result));
-        $this->assertThat($this->pdoDecorator->query($query, 'test', 'overloaded', 'call'), $this->identicalTo($result));
+        $this->assertThat(
+            $this->pdoDecorator->query($query, 'test', 'overloaded', 'call'),
+            $this->identicalTo($result)
+        );
     }
 }

@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace LazyPDO;
+namespace LazyPDO\Test;
 
-use PDO;
-use PDOStatement;
-use PHPUnit_Framework_TestCase;
+use LazyPDO\SimplePDOStatementDecorator;
 
-class PDOStatementDecoratorTest extends PHPUnit_Framework_TestCase
+class PDOStatementDecoratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var PDOStatement
+     * @var \PDOStatement
      */
     protected $pdoStatementDecorator;
 
@@ -123,7 +121,7 @@ class PDOStatementDecoratorTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('pdo_sqlite not loaded');
         }
 
-        $pdo = new PDO('sqlite::memory:', null, null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $pdo = new \PDO('sqlite::memory:', null, null, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         $select = $pdo->prepare('SELECT 42');
         $wrapped = new SimplePDOStatementDecorator($select);
         $this->assertEquals('SELECT 42', $wrapped->getQueryString());

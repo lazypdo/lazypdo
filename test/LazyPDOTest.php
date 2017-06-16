@@ -9,14 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace LazyPDO;
+namespace LazyPDO\Test;
 
-use PDO;
-use PHPUnit_Framework_TestCase;
-use ReflectionClass;
-use RuntimeException;
+use LazyPDO\LazyPDO;
 
-class LazyPDOTest extends PHPUnit_Framework_TestCase
+class LazyPDOTest extends \PHPUnit_Framework_TestCase
 {
     private $pdo;
 
@@ -109,20 +106,20 @@ class LazyPDOTest extends PHPUnit_Framework_TestCase
         if (false === extension_loaded('pdo_sqlite')) {
             $this->markTestSkipped('pdo_sqlite not loaded');
         }
-        $class = new ReflectionClass('LazyPDO\\LazyPDO');
+        $class = new \ReflectionClass('LazyPDO\\LazyPDO');
         $method = $class->getMethod('getPDO');
         $method->setAccessible(true);
 
         $dsn = 'sqlite::memory:';
-        $lazy = new LazyPDO($dsn, 'user', 'pass', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $lazy = new LazyPDO($dsn, 'user', 'pass', array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         $pdo = $method->invoke($lazy);
         $this->assertInstanceOf('PDO', $pdo);
         $this->assertThat($pdo, $this->identicalTo($method->invoke($lazy)));
-        $this->assertEquals(PDO::ERRMODE_EXCEPTION, $pdo->getAttribute(PDO::ATTR_ERRMODE));
+        $this->assertEquals(\PDO::ERRMODE_EXCEPTION, $pdo->getAttribute(\PDO::ATTR_ERRMODE));
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage Can not serialize in transaction
      */
     public function testSerializeShouldThrowExceptionInTransaction()
@@ -139,11 +136,8 @@ class LazyPDOTest extends PHPUnit_Framework_TestCase
 
     public function testSerialize()
     {
-        $dsn = 'sqlite::memory:';
-        $lazy = new LazyPDO($dsn, 'user', 'pass');
-        $serialized = serialize($lazy);
-        $this->assertEquals('C:15:"LazyPDO\\LazyPDO":73:{a:4:{i:0;s:' . mb_strlen($dsn) . ':"' . $dsn . '";i:1;s:4:"user";i:2;s:4:"pass";i:3;a:0:{}}}', $serialized);
-        $this->assertEquals($lazy, unserialize($serialized));
+        $lazy = new LazyPDO('sqlite::memory:', 'user', 'pass');
+        $this->assertEquals($lazy, unserialize(serialize($lazy)));
     }
 
     public function testSerializationShouldPreserveAttributes()
@@ -153,11 +147,11 @@ class LazyPDOTest extends PHPUnit_Framework_TestCase
         }
         $dsn = 'sqlite::memory:';
         $lazy = new LazyPDO($dsn, 'user', 'pass', array());
-        $this->assertNotEquals(PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(PDO::ATTR_ERRMODE));
-        $lazy->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->assertEquals(PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(PDO::ATTR_ERRMODE));
+        $this->assertNotEquals(\PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(\PDO::ATTR_ERRMODE));
+        $lazy->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->assertEquals(\PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(\PDO::ATTR_ERRMODE));
         $lazy = unserialize(serialize($lazy));
-        $this->assertEquals(PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(PDO::ATTR_ERRMODE));
+        $this->assertEquals(\PDO::ERRMODE_EXCEPTION, $lazy->getAttribute(\PDO::ATTR_ERRMODE));
     }
 
     public function testTransactions()
@@ -190,7 +184,7 @@ class LazyPDOTest extends PHPUnit_Framework_TestCase
                     'id' => 1,
                 )
             ),
-            $select->fetchAll(PDO::FETCH_ASSOC)
+            $select->fetchAll(\PDO::FETCH_ASSOC)
         );
     }
 }
