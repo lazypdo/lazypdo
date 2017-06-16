@@ -1,5 +1,5 @@
-LazyPDO
-=======
+# LazyPDO
+
 [![Total Downloads](https://img.shields.io/packagist/dt/lazypdo/lazypdo.svg)](https://packagist.org/packages/lazypdo/lazypdo)
 [![Latest Stable Version](https://img.shields.io/packagist/v/lazypdo/lazypdo.svg)](https://packagist.org/packages/lazypdo/lazypdo)
 [![Travis Build](https://travis-ci.org/lazypdo/lazypdo.svg?branch=master)](https://travis-ci.org/lazypdo/lazypdo)
@@ -7,6 +7,6 @@ LazyPDO
 
 LazyPDO is a set of wrappers over PHP's standard PDO and PDOStatement classes. It enables lazy loading, serialization and decoration.
 
-#Install
+## Install
 Via [composer](https://getcomposer.org):
 `$ composer require "lazypdo/lazypdo"`
