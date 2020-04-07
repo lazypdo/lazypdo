@@ -17,7 +17,7 @@ use PDOStatement;
 /**
  * PDO decorator, redirect calls to PDO
  */
-abstract class PDODecorator extends PDO
+abstract class PDODecorator
 {
     /**
      * Get the PDO object
