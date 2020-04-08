@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of LazyPDO.
- *
- * (c) Alexey Karapetov <karapetov@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace LazyPDO;
 
 use PDO;
@@ -20,21 +11,6 @@ use PDOStatement;
 abstract class PDODecorator
 {
     /**
-     * Get the PDO object
-     *
-     * @return PDO
-     */
-    abstract protected function getPDO();
-
-    /**
-     * Empty default constructor. Redefined the PDO's native one
-     * to prevent instantiating the PDO.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Sets attribute
      *
      * @param int $attribute Attribute code
@@ -45,6 +21,13 @@ abstract class PDODecorator
     {
         return $this->getPDO()->setAttribute($attribute, $value);
     }
+
+    /**
+     * Get the PDO object
+     *
+     * @return PDO
+     */
+    abstract protected function getPDO();
 
     /**
      * Returns attribute
