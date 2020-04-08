@@ -1,21 +1,15 @@
 <?php
 
-/**
- * This file is part of LazyPDO.
- *
- * (c) Alexey Karapetov <karapetov@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace LazyPDO\Test;
 
-class PDODecoratorTest extends \PHPUnit_Framework_TestCase
-{
-    protected $pdoDecorator;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-    protected $pdoStub;
+class PDODecoratorTest extends TestCase
+{
+    protected MockObject $pdoDecorator;
+
+    protected MockObject $pdoStub;
 
     protected function setUp()
     {
@@ -83,6 +77,7 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider boolValuesProvider
+     * @param $returnFlag
      */
     public function testPrepare($returnFlag)
     {
@@ -99,6 +94,7 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider boolValuesProvider
+     * @param $result
      */
     public function testBeginTransaction($result)
     {
@@ -114,6 +110,7 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider boolValuesProvider
+     * @param $result
      */
     public function testInTransaction($result)
     {
@@ -129,6 +126,7 @@ class PDODecoratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider boolValuesProvider
+     * @param $result
      */
     public function testRollBack($result)
     {

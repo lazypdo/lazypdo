@@ -1,23 +1,12 @@
 <?php
 
-/**
- * This file is part of LazyPDO.
- *
- * (c) Alexey Karapetov <karapetov@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace LazyPDO;
 
-abstract class PDOStatementDecorator extends \PDOStatement
-{
-    /**
-     * @return \PDOStatement
-     */
-    abstract protected function getPDOStatement();
+use PDO;
+use PDOStatement;
 
+abstract class PDOStatementDecorator extends PDOStatement
+{
     /**
      * Original queryString can not be copied over. Use this method assess $queryString
      * @return string
@@ -26,6 +15,11 @@ abstract class PDOStatementDecorator extends \PDOStatement
     {
         return $this->getPDOStatement()->queryString;
     }
+
+    /**
+     * @return PDOStatement
+     */
+    abstract protected function getPDOStatement();
 
     /**
      * @inheritdoc
@@ -38,7 +32,7 @@ abstract class PDOStatementDecorator extends \PDOStatement
     /**
      * @inheritdoc
      */
-    public function fetch($fetch_style = null, $cursor_orientation = \PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
+    public function fetch($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
     {
         return call_user_func_array(array($this->getPDOStatement(), __FUNCTION__), func_get_args());
     }
@@ -62,11 +56,11 @@ abstract class PDOStatementDecorator extends \PDOStatement
         $args[1] = &$param;
         return call_user_func_array(array($this->getPDOStatement(), __FUNCTION__), $args);
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function bindValue($parameter, $value, $data_type = \PDO::PARAM_STR)
+    public function bindValue($parameter, $value, $data_type = PDO::PARAM_STR)
     {
         return call_user_func_array(array($this->getPDOStatement(), __FUNCTION__), func_get_args());
     }

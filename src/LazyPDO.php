@@ -1,25 +1,20 @@
 <?php
 
-/**
- * This file is part of LazyPDO.
- *
- * (c) Alexey Karapetov <karapetov@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace LazyPDO;
+
+use PDO;
+use RuntimeException;
+use Serializable;
 
 /**
  * LazyPDO does not instantiate real PDO until it is really needed
  */
-class LazyPDO extends PDODecorator implements \Serializable
+class LazyPDO extends PDODecorator implements Serializable
 {
-    private $dsn;
-    private $user;
-    private $password;
-    private $options = array();
+    private string $dsn;
+    private ?string $user;
+    private ?string $password;
+    private array $options = array();
 
     private $pdo = null;
 
@@ -40,16 +35,21 @@ class LazyPDO extends PDODecorator implements \Serializable
     }
 
     /**
-     * Get PDO object. Cache the result
+     * serialize
      *
-     * @return \PDO
+     * @return string
      */
-    protected function getPDO()
+    public function serialize()
     {
-        if (null === $this->pdo) {
-            $this->pdo = new \PDO($this->dsn, $this->user, $this->password, $this->options);
+        if ($this->inTransaction()) {
+            throw new RuntimeException('Can not serialize in transaction');
         }
-        return $this->pdo;
+        return serialize(array(
+            $this->dsn,
+            $this->user,
+            $this->password,
+            $this->options,
+        ));
     }
 
     /**
@@ -61,24 +61,6 @@ class LazyPDO extends PDODecorator implements \Serializable
     {
         // Do not call parent method if there is no pdo object
         return $this->pdo && parent::inTransaction();
-    }
-
-    /**
-     * serialize
-     *
-     * @return string
-     */
-    public function serialize()
-    {
-        if ($this->inTransaction()) {
-            throw new \RuntimeException('Can not serialize in transaction');
-        }
-        return serialize(array(
-            $this->dsn,
-            $this->user,
-            $this->password,
-            $this->options,
-        ));
     }
 
     /**
@@ -106,5 +88,18 @@ class LazyPDO extends PDODecorator implements \Serializable
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get PDO object. Cache the result
+     *
+     * @return PDO
+     */
+    protected function getPDO()
+    {
+        if (null === $this->pdo) {
+            $this->pdo = new PDO($this->dsn, $this->user, $this->password, $this->options);
+        }
+        return $this->pdo;
     }
 }

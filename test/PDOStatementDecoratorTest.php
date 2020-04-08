@@ -1,26 +1,18 @@
 <?php
 
-/**
- * This file is part of LazyPDO.
- *
- * (c) Alexey Karapetov <karapetov@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace LazyPDO\Test;
 
 use LazyPDO\SimplePDOStatementDecorator;
+use PDO;
+use PDOStatement;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class PDOStatementDecoratorTest extends \PHPUnit_Framework_TestCase
+class PDOStatementDecoratorTest extends TestCase
 {
-    /**
-     * @var \PDOStatement
-     */
-    protected $pdoStatementDecorator;
+    protected PDOStatement $pdoStatementDecorator;
 
-    protected $pdoStatementStub;
+    protected MockObject $pdoStatementStub;
 
     protected function setUp()
     {
@@ -121,7 +113,7 @@ class PDOStatementDecoratorTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('pdo_sqlite not loaded');
         }
 
-        $pdo = new \PDO('sqlite::memory:', null, null, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+        $pdo = new PDO('sqlite::memory:', null, null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         $select = $pdo->prepare('SELECT 42');
         $wrapped = new SimplePDOStatementDecorator($select);
         $this->assertEquals('SELECT 42', $wrapped->getQueryString());
